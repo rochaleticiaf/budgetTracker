@@ -1,0 +1,102 @@
+﻿@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<h1>Budget Tracker</h1>
+
+<main class="container">
+    <div class="card-container">
+        <div class="card">
+            <section class="grid-summary">
+                <h3>Total Budget: @Model.TotalBudget</h3>
+                <h3>Total Spent: @Model.TotalSpent</h3>
+                <h3>Summary: @Model.Summary</h3>
+            </section>
+        </div>
+    </div>
+
+    @foreach (var category in Model.CategoryList)
+    {
+        <div class="card-container">
+            <div class="card-header">
+                <h2>@category.Name</h2>
+                <button value="@category.Id" id="edit-category-@category.Id" class="fa fa-pencil" onclick="editCategory(@category.Id,'@category.Name')"></button>
+                <button value="@category.Id" id="delete-category-@category.Id" class="fa fa-trash-o" onclick="deleteCategory(@category.Id)"></button>
+            </div>
+            <div class="card">
+
+                @foreach (var type in category.tb_Types)
+                {
+                    <div class="card-type">
+                        <label for="budget-input-@type.Name" id="budget-label-@type.Name">@type.Name</label>
+                        <input value="@(type.Expenses?.Value ?? 0)" type="number" id="budget-input-@type.Name" name="BudgetValues[@type.Id]" onfocusout="saveTypeValue(@type.Id, this.value)">
+                        <button value="@type.Id" id="edit-type-@type.Id" class="fa fa-pencil" onclick="editType(@type.Id,'@type.Name',@type.Id_category)"></button>
+                        <button value="@type.Id" id="delete-type-@type.Id" class="fa fa-trash-o" onclick="deleteType(@type.Id)"></button>
+                    </div>
+                }
+
+                <div class="btn-add">
+                    <button value="@category.Id" id="add-type-@category.Id" class="fa fa-plus" onclick="addType(@category.Id)"></button>
+                </div>
+
+            </div>
+        </div>
+        <br />
+    }
+
+    <div class="card" id="add-type-card" hidden>
+        <form method="post" asp-controller="Type" asp-action="Create">
+            @Html.AntiForgeryToken()
+
+            <label for="Name">Add an Expense</label>
+            <input type="text" id="add-type-Name" name="Name" />
+            <input type="text" id="add-type-Id" name="Id_category" hidden />
+            <button type="submit" id="add-type" class="fa fa-check"></button>
+            <button type="button" id="close-add-type" onclick="closeAddType()" class="fa fa-times"></button>
+        </form>
+    </div>
+
+    <div class="card" id="edit-type-card" hidden>
+        <form method="post" asp-controller="Type" asp-action="Edit">
+            @Html.AntiForgeryToken()
+
+            <label for="Name">Edit</label>
+            <input type="text" id="edit-type-Name" name="Name" />
+            <input type="text" id="edit-type-Id" name="Id" hidden />
+            <input type="text" id="edit-type-Id-category" name="Id_category" hidden />
+            <button type="submit" id="edit-type" class="fa fa-check"></button>
+            <button type="button" id="close-edit-type" onclick="closeEditType()" class="fa fa-times"></button>
+        </form>
+    </div>
+
+    <div class="card" id="edit-card" hidden>
+        <form method="post" asp-controller="Category" asp-action="Edit">
+            @Html.AntiForgeryToken()
+
+            <label for="Name">Edit</label>
+            <input type="text" id="edit-Name" name="Name" />
+            <input type="text" id="edit-Id" name="Id" hidden />
+            <button type="submit" id="edit-category" class="fa fa-check"></button>
+            <button type="button" id="close-edit-category" onclick="closeEditCategory()" class="fa fa-times"></button>
+
+        </form>
+    </div>
+
+    <div class="card-container">
+        <div class="card-header">
+            <h2>Create Category</h2>
+        </div>
+        <div class="card">
+            <form method="post" asp-controller="Category" asp-action="Create">
+                @Html.AntiForgeryToken()
+
+                <label for="Name">Name</label>
+                <input type="text" id="add-Name" name="Name" />
+                <button type="submit" id="add-category" class="fa fa-plus"></button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script src="~/js/index.js" asp-append-version="true"></script> 
