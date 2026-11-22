@@ -2,7 +2,7 @@
 
 A web application for tracking income, categorizing expenses, and monitoring spending limits in real time.
 
-## Tecnologias Utilizadas
+## Tech Stack
 
 - HTML5: Markup
 - CSS3 & Bootstrap: Style
