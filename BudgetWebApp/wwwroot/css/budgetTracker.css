@@ -73,6 +73,7 @@ h2, h3 {
 }
 
 .card {
+    width: 100%;
     text-align: center;
     max-width: 100%;
     flex: 1 1 50%;
@@ -85,9 +86,16 @@ h2, h3 {
     font-weight: 400;
 }
 
-.card label{
-    padding: 1rem;
-}
+    .card label {
+        width: 35%;
+        padding: 1rem;
+        text-align: left;
+    }
+
+    .card #label-create-category {
+        width: 20%;
+        text-align: center;
+    }
 
     .card > .card-type {
         display: flex;

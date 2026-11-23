@@ -91,7 +91,7 @@
             <form method="post" asp-controller="Category" asp-action="Create">
                 @Html.AntiForgeryToken()
 
-                <label for="Name">Name</label>
+                <label id="label-create-category" for="Name">Name</label>
                 <input type="text" id="add-Name" name="Name" />
                 <button type="submit" id="add-category" class="fa fa-plus"></button>
             </form>
